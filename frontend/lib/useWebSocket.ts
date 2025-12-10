@@ -29,7 +29,7 @@ export function useWebSocket(onMessage: (message: WebSocketMessage) => void) {
       };
 
       ws.current.onerror = (error) => {
-        console.error("WebSocket error:", error);
+        console.log("WebSocket error:", error);
       };
 
       ws.current.onclose = () => {
