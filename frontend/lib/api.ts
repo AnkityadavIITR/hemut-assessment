@@ -141,7 +141,6 @@ class APIClient {
     });
   }
 
-  // RAG endpoint
   async getSuggestedAnswer(question: string): Promise<RAGSuggestion> {
     return this.request("/api/rag/suggest", {
       method: "POST",
