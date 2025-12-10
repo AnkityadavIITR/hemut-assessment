@@ -76,13 +76,13 @@ class UserDB:
     """Database operations for users."""
 
     @staticmethod
-    async def create_user(username: str, email: str, hashed_password: str) -> Optional[int]:
+    async def create_user(username: str, email: str, hashed_password: str, is_admin: bool) -> Optional[int]:
         """Create a new user."""
         async with get_db() as db:
             try:
                 cursor = await db.execute(
-                    "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-                    (username, email, hashed_password)
+                    "INSERT INTO users (username, email, password, is_admin) VALUES (?, ?, ?, ?)",
+                    (username, email, hashed_password, is_admin)
                 )
                 await db.commit()
                 return cursor.lastrowid

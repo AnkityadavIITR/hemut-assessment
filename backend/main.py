@@ -94,7 +94,8 @@ async def register(user_data: UserCreate):
         )
 
     hashed_password = get_password_hash(user_data.password)
-    user_id = await UserDB.create_user(user_data.username, user_data.email, hashed_password)
+    is_admin=user_data.is_admin if hasattr(user_data, 'is_admin') else False
+    user_id = await UserDB.create_user(user_data.username, user_data.email, hashed_password, is_admin)
 
     if not user_id:
         raise HTTPException(
