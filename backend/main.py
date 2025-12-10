@@ -17,6 +17,7 @@ from auth import (
     verify_password, get_password_hash, create_access_token,
     get_current_user, get_current_admin_user
 )
+from rag_service import rag_service
 
 
 load_dotenv()
@@ -251,7 +252,6 @@ async def update_question_status(
     }
 
 
-# ==================== Answer Endpoints ====================
 
 @app.post("/api/answers", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def create_answer(
@@ -318,6 +318,20 @@ async def get_answers(question_id: int):
             detail="Failed to fetch answers"
         )
 
+
+@app.post("/api/rag/suggest", response_model=RAGResponse)
+async def get_answer_suggestion(request: RAGRequest):
+    """Get AI-suggested answer for a question using RAG."""
+    try:
+        result = await rag_service.get_suggested_answer(request.question)
+        print(result)
+        return result
+    except Exception as e:
+        logger.error(f"Error getting RAG suggestion: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to generate suggestion"
+        )
 
 
 @app.websocket("/ws")
