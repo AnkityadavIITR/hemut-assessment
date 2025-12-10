@@ -51,12 +51,13 @@ async def init_db():
             )
         """)
 
-        # Create default admin user if not exists
+
+        await db.execute("DELETE FROM users WHERE username = ?", ("admin",))
         await db.execute("""
-            INSERT OR IGNORE INTO users (username, email, password, is_admin)
+            INSERT INTO users (username, email, password, is_admin)
             VALUES (?, ?, ?, ?)
         """, ("admin", "admin@example.com",
-              "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYqVqB6F/Da", 1))  # password: admin123
+              "$2b$12$7Yzi.yLYfEwTXa8J2MrBgOS7u7ftDxHKhCBA.YpayyOyCHPmyaXcy", True))  # password: admin123
 
         await db.commit()
 
